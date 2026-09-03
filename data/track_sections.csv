@@ -1,0 +1,41 @@
+section_id,section_name,zone,total_length_km,traffic_density,traffic_density_num,asset_age_years,last_inspection_date,days_since_inspection,track_type,track_condition_score,annual_speed_limit_kmph
+SEC_001,Delhi-Agra Up Line,Northern Railway,55.4,Low,1,29.5,2025-08-04,150,BG Non-Electrified,77.9,160
+SEC_002,Mumbai-Pune Down Line,Central Railway,30.5,Medium,2,5.7,2025-12-07,25,BG Non-Electrified,62.8,60
+SEC_003,Chennai-Bangalore Up Line,Western Railway,84.2,High,3,26.1,2025-03-18,289,BG Double Line,68.3,60
+SEC_004,Kolkata-Bhubaneswar Down Line,Eastern Railway,71.1,Medium,2,34.6,2025-05-20,226,BG Non-Electrified,44.0,110
+SEC_005,Hyderabad-Secunderabad Up Line,South Central Railway,154.8,Medium,2,6.4,2025-06-22,193,MG,82.5,130
+SEC_006,Jaipur-Ajmer Down Line,Southern Railway,28.0,Very High,4,25.1,2025-06-12,203,MG,83.9,160
+SEC_007,Lucknow-Kanpur Up Line,Northern Railway,131.3,Medium,2,40.1,2025-09-15,108,BG Electrified,73.0,110
+SEC_008,Ahmedabad-Surat Down Line,Central Railway,77.7,Very High,4,44.4,2025-11-01,61,BG Double Line,71.3,110
+SEC_009,Patna-Gaya Up Line,Western Railway,59.1,Medium,2,9.0,2025-01-13,353,BG Electrified,69.6,90
+SEC_010,Bhopal-Indore Down Line,Eastern Railway,77.6,Medium,2,25.0,2025-04-30,246,BG Non-Electrified,74.5,60
+SEC_011,Nagpur-Wardha Up Line,South Central Railway,81.2,Low,1,11.8,2025-07-14,171,BG Electrified,43.7,160
+SEC_012,Amritsar-Ludhiana Down Line,Southern Railway,97.4,Medium,2,39.7,2025-01-21,345,BG Double Line,39.3,90
+SEC_013,Chandigarh-Ambala Up Line,Northern Railway,138.3,High,3,12.6,2025-08-10,144,BG Double Line,88.4,130
+SEC_014,Kochi-Palakkad Down Line,Central Railway,99.1,Very High,4,17.6,2025-10-13,80,BG Electrified,79.1,60
+SEC_015,Varanasi-Allahabad Up Line,Western Railway,84.7,Medium,2,8.6,2025-01-08,358,BG Electrified,55.0,160
+SEC_016,Raipur-Bilaspur Down Line,Eastern Railway,157.0,High,3,44.8,2025-03-14,293,BG Electrified,74.2,60
+SEC_017,Guwahati-Dibrugarh Up Line,South Central Railway,141.8,High,3,31.3,2025-08-08,146,MG,37.3,130
+SEC_018,Jodhpur-Bikaner Down Line,Southern Railway,175.4,Low,1,8.8,2025-08-10,144,BG Non-Electrified,63.0,60
+SEC_019,Visakhapatnam-Vijayawada Up Line,Northern Railway,98.8,Medium,2,39.4,2025-01-29,337,BG Non-Electrified,39.9,90
+SEC_020,Mysore-Hubli Down Line,Central Railway,166.6,High,3,25.2,2025-03-26,281,MG,61.8,60
+SEC_021,Delhi-Agra Up Line,Western Railway,54.5,Very High,4,42.0,2025-07-18,167,BG Non-Electrified,87.1,60
+SEC_022,Mumbai-Pune Down Line,Eastern Railway,176.4,High,3,5.7,2025-11-17,45,BG Non-Electrified,38.3,130
+SEC_023,Chennai-Bangalore Up Line,South Central Railway,159.0,Medium,2,42.7,2025-03-27,280,BG Double Line,92.7,160
+SEC_024,Kolkata-Bhubaneswar Down Line,Southern Railway,80.8,High,3,34.5,2025-07-16,169,MG,58.5,160
+SEC_025,Hyderabad-Secunderabad Up Line,Northern Railway,70.8,Medium,2,21.4,2025-11-20,42,BG Non-Electrified,68.2,60
+SEC_026,Jaipur-Ajmer Down Line,Central Railway,26.1,High,3,5.1,2025-08-27,127,BG Electrified,85.9,60
+SEC_027,Lucknow-Kanpur Up Line,Western Railway,50.3,Medium,2,24.1,2025-04-18,258,BG Non-Electrified,77.0,160
+SEC_028,Ahmedabad-Surat Down Line,Eastern Railway,148.2,Medium,2,26.8,2025-04-24,252,BG Non-Electrified,36.1,130
+SEC_029,Patna-Gaya Up Line,South Central Railway,126.1,Medium,2,17.2,2025-11-25,37,BG Electrified,33.9,110
+SEC_030,Bhopal-Indore Down Line,Southern Railway,46.4,Low,1,36.4,2025-09-15,108,BG Double Line,39.1,90
+SEC_031,Nagpur-Wardha Up Line,Northern Railway,88.1,Medium,2,14.0,2025-11-14,48,BG Electrified,33.3,160
+SEC_032,Amritsar-Ludhiana Down Line,Central Railway,42.4,Very High,4,37.9,2025-08-23,131,BG Double Line,61.3,130
+SEC_033,Chandigarh-Ambala Up Line,Western Railway,177.6,Medium,2,40.8,2025-12-21,11,MG,90.2,130
+SEC_034,Kochi-Palakkad Down Line,Eastern Railway,124.2,High,3,14.3,2025-03-13,294,BG Double Line,40.1,110
+SEC_035,Varanasi-Allahabad Up Line,South Central Railway,25.1,Low,1,11.4,2025-03-20,287,MG,33.7,160
+SEC_036,Raipur-Bilaspur Down Line,Southern Railway,41.0,Very High,4,22.5,2025-03-26,281,BG Electrified,85.3,60
+SEC_037,Guwahati-Dibrugarh Up Line,Northern Railway,81.6,High,3,27.6,2025-08-24,130,BG Non-Electrified,67.6,60
+SEC_038,Jodhpur-Bikaner Down Line,Central Railway,108.3,Medium,2,28.6,2025-02-27,308,MG,90.8,90
+SEC_039,Visakhapatnam-Vijayawada Up Line,Western Railway,80.3,Medium,2,30.8,2025-08-09,145,MG,59.7,60
+SEC_040,Mysore-Hubli Down Line,Eastern Railway,179.4,High,3,2.4,2025-03-09,298,BG Electrified,64.9,160
