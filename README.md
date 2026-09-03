@@ -102,7 +102,7 @@ Premium Streamlit dashboard with:
 
 ---
 
-## Tech Stack (for judges)
+## Tech Stack
 | Component | Technology |
 |-----------|-----------|
 | ML Priority Model | XGBoost (Gradient Boosting) |
@@ -112,13 +112,3 @@ Premium Streamlit dashboard with:
 
 ---
 
-## How to Explain to Judges
-
-**"AI kahan hai?"**
-> XGBoost model predicts a priority score (0–100) for each maintenance job based on 11 features. This replaces manual expert judgment.
-
-**"Optimization kahan hai?"**
-> Google OR-Tools CP-SAT solver finds the optimal time-slot for each job — making sure it doesn't conflict with running trains, and urgent jobs are scheduled first.
-
-**"Real data kahan se aaya?"**
-> Dataset is synthetically generated but mirrors real IR parameters: zone, traffic density, asset age, defect severity. In production, this would pull from IRMS (Indian Railways Management System).
