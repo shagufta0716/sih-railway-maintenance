@@ -308,7 +308,7 @@ fig_gantt.update_layout(
     showlegend=True,
 )
 fig_gantt.update_yaxes(categoryorder="array", categoryarray=gantt_df["section_id"].unique().tolist())
-st.plotly_chart(fig_gantt, use_container_width=True)
+st.plotly_chart(fig_gantt, width="stretch")
 
 # ─────────────────────────────────────────
 # Charts Row
@@ -335,7 +335,7 @@ with c1:
         height=280,
         showlegend=True,
     )
-    st.plotly_chart(fig_pie, use_container_width=True)
+    st.plotly_chart(fig_pie, width="stretch")
 
 with c2:
     st.markdown('<div class="section-header">📊 Priority Score Histogram</div>', unsafe_allow_html=True)
@@ -352,7 +352,7 @@ with c2:
         height=280,
         showlegend=False,
     )
-    st.plotly_chart(fig_hist, use_container_width=True)
+    st.plotly_chart(fig_hist, width="stretch")
 
 with c3:
     st.markdown('<div class="section-header">🗺️ Jobs per Zone</div>', unsafe_allow_html=True)
@@ -375,7 +375,7 @@ with c3:
         height=280,
         coloraxis_showscale=False,
     )
-    st.plotly_chart(fig_bar, use_container_width=True)
+    st.plotly_chart(fig_bar, width="stretch")
 
 # ─────────────────────────────────────────
 # Jobs per Day timeline
@@ -405,7 +405,7 @@ fig_day.update_layout(
     yaxis_title="Number of Jobs",
     template="plotly_dark",
 )
-st.plotly_chart(fig_day, use_container_width=True)
+st.plotly_chart(fig_day, width="stretch")
 
 # ─────────────────────────────────────────
 # Schedule Table
@@ -428,7 +428,7 @@ display_df.columns = [
 
 st.dataframe(
     display_df,
-    use_container_width=True,
+    width="stretch",
     height=400,
     column_config={
         "Priority Score": st.column_config.ProgressColumn(
