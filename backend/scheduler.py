@@ -9,8 +9,15 @@ Uses trained ML model + Google OR-Tools CP-SAT solver to:
 import pandas as pd
 import numpy as np
 import pickle
+import argparse
 from datetime import datetime, timedelta
 from ortools.sat.python import cp_model
+
+parser = argparse.ArgumentParser()
+parser.add_argument("--source", type=str, default="synthetic", choices=["synthetic", "real"], help="Data source")
+args = parser.parse_args()
+
+DATA_DIR = "data" if args.source == "synthetic" else "data/real"
 
 print("="*55)
 print("  STEP 3: OR-Tools Maintenance Scheduler")
@@ -19,9 +26,9 @@ print("="*55)
 # ─────────────────────────────────────────
 # Load data & model
 # ─────────────────────────────────────────
-jobs_df      = pd.read_csv("data/maintenance_jobs.csv")
-timetable_df = pd.read_csv("data/train_timetable.csv")
-sections_df  = pd.read_csv("data/track_sections.csv")
+jobs_df      = pd.read_csv(f"{DATA_DIR}/maintenance_jobs.csv")
+timetable_df = pd.read_csv(f"{DATA_DIR}/train_timetable.csv")
+sections_df  = pd.read_csv(f"{DATA_DIR}/track_sections.csv")
 
 with open("models/priority_model.pkl", "rb") as f:
     model_data = pickle.load(f)
@@ -67,17 +74,32 @@ HOURS_PER_DAY = 24
 
 # blocked_slots[section_id][day] = set of busy hours
 blocked_slots = {}
+priority1_buffers = {} # Soft preference buffers
+
 for _, row in timetable_df.iterrows():
     sec  = row["section_id"]
     day  = int(row["day"])
     e_hr = int(row["entry_hour"])
     x_hr = min(int(row["exit_hour"]) + 1, 23)
+    
+    # Hard conflict for all trains
     if sec not in blocked_slots:
         blocked_slots[sec] = {}
     if day not in blocked_slots[sec]:
         blocked_slots[sec][day] = set()
     for h in range(e_hr, x_hr + 1):
         blocked_slots[sec][day].add(h)
+        
+    # Soft buffer for priority 1 trains
+    if row.get("priority_level", 3) == 1:
+        if sec not in priority1_buffers:
+            priority1_buffers[sec] = {}
+        if day not in priority1_buffers[sec]:
+            priority1_buffers[sec][day] = set()
+        if e_hr - 1 >= 0:
+            priority1_buffers[sec][day].add(e_hr - 1)
+        if x_hr + 1 <= 23:
+            priority1_buffers[sec][day].add(x_hr + 1)
 
 print("      Conflict map ready")
 
@@ -92,20 +114,29 @@ def find_free_window(section_id, duration_hrs, target_day=0, preferred_start_hr=
     needed = int(np.ceil(duration_hrs))
     sec_busy = blocked_slots.get(section_id, {})
     sec_maint = maint_slots.get(section_id, {})
+    sec_p1_buffer = priority1_buffers.get(section_id, {})
 
-    for day in range(target_day, max_day):
-        busy_today = sec_busy.get(day, set()).union(sec_maint.get(day, set()))
-        candidate_hours = [preferred_start_hr] + [h for h in range(0, 24 - needed) if h != preferred_start_hr]
-        for start_hr in candidate_hours:
-            candidate = range(start_hr, start_hr + needed)
-            if not any(h in busy_today for h in candidate):
-                if section_id not in maint_slots:
-                    maint_slots[section_id] = {}
-                if day not in maint_slots[section_id]:
-                    maint_slots[section_id][day] = set()
-                for h in candidate:
-                    maint_slots[section_id][day].add(h)
-                return day, start_hr
+    # First pass: avoid priority 1 buffers. Second pass: allow buffers if necessary
+    for allow_buffer in [False, True]:
+        for day in range(target_day, max_day):
+            busy_today = sec_busy.get(day, set()).union(sec_maint.get(day, set()))
+            buffer_today = sec_p1_buffer.get(day, set())
+            
+            candidate_hours = [preferred_start_hr] + [h for h in range(0, 24 - needed) if h != preferred_start_hr]
+            for start_hr in candidate_hours:
+                candidate = range(start_hr, start_hr + needed)
+                if not any(h in busy_today for h in candidate):
+                    if not allow_buffer and any(h in buffer_today for h in candidate):
+                        continue # Try another slot
+                        
+                    if section_id not in maint_slots:
+                        maint_slots[section_id] = {}
+                    if day not in maint_slots[section_id]:
+                        maint_slots[section_id][day] = set()
+                    for h in candidate:
+                        maint_slots[section_id][day].add(h)
+                    return day, start_hr
+                    
     return target_day, preferred_start_hr
 
 
@@ -210,9 +241,9 @@ for idx, row in top_jobs.iterrows():
     })
 
 schedule_df = pd.DataFrame(schedule).sort_values("ml_priority_score", ascending=False)
-schedule_df.to_csv("data/optimized_schedule.csv", index=False)
+schedule_df.to_csv(f"{DATA_DIR}/optimized_schedule.csv", index=False)
 
-print(f"\n  Schedule saved -> data/optimized_schedule.csv")
+print(f"\n  Schedule saved -> {DATA_DIR}/optimized_schedule.csv")
 print(f"  Total jobs scheduled: {len(schedule_df)}")
 print(f"  Critical jobs: {(schedule_df['urgency']=='Critical').sum()}")
 print(f"  High jobs    : {(schedule_df['urgency']=='High').sum()}")
@@ -221,4 +252,4 @@ print(f"  Avg priority : {schedule_df['ml_priority_score'].mean():.1f}")
 print("\n" + "="*55)
 print("  Scheduling Complete!")
 print("="*55)
-print("\n  Next: streamlit run app.py")
+print("\n  Next: python -m streamlit run app.py")

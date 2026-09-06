@@ -1,0 +1,8 @@
+train_id,train_name,train_type,origin,destination,departure_time,arrival_time,route_section_ids,priority_level
+18109,Tatanagar - Itwari Express,Express,TATA,ITR,08:15,18:30,SEC_TATA_SINI;SEC_SINI_CKP;SEC_CKP_MOU;SEC_MOU_ROU;SEC_ROU_GP;SEC_GP_JSG,2
+12871,Howrah - Titlagarh Steel Express,Superfast,HWH,TIG,06:35,12:45,SEC_TATA_SINI;SEC_SINI_CKP;SEC_CKP_MOU;SEC_MOU_ROU,1
+20836,Puri - Rourkela Vande Bharat Exp,Vande Bharat,PURI,ROU,05:00,12:45,SEC_GP_JSG;SEC_ROU_GP,1
+12834,Howrah - Ahmedabad Superfast,Superfast,HWH,ADI,23:45,07:10,SEC_TATA_SINI;SEC_SINI_CKP;SEC_CKP_MOU;SEC_MOU_ROU;SEC_ROU_GP;SEC_GP_JSG,1
+18011,Howrah - Chakradharpur Express,Express,HWH,CKP,00:05,06:00,SEC_TATA_SINI;SEC_SINI_CKP,2
+G_COAL_01,Iron Ore / Coal Rake Freight,Freight,TATA,JSG,10:30,16:00,SEC_TATA_SINI;SEC_SINI_CKP;SEC_CKP_MOU;SEC_MOU_ROU;SEC_ROU_GP;SEC_GP_JSG,3
+G_STEEL_02,Tata Steel Coil Freight,Freight,TATA,ROU,14:00,18:30,SEC_TATA_SINI;SEC_SINI_CKP;SEC_CKP_MOU;SEC_MOU_ROU,3

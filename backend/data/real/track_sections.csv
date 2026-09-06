@@ -1,0 +1,7 @@
+section_id,section_name,zone,total_length_km,annual_speed_limit_kmph,track_type,asset_age_years,days_since_inspection,last_inspection_date,track_condition_score,traffic_density_num,traffic_density
+SEC_TATA_SINI,Tatanagar (TATA)-Sini (SINI),CKP,35,110,BG Electrified,15.0,30,2026-08-07,71.9,1,Low
+SEC_SINI_CKP,Sini (SINI)-Chakradharpur (CKP),CKP,27,110,BG Electrified,15.0,30,2026-08-07,71.9,1,Low
+SEC_CKP_MOU,Chakradharpur (CKP)-Manoharpur (MOU),CKP,62,110,BG Electrified,15.0,30,2026-08-07,59.4,1,Low
+SEC_MOU_ROU,Manoharpur (MOU)-Rourkela (ROU),CKP,40,110,BG Electrified,15.0,30,2026-08-07,59.4,1,Low
+SEC_ROU_GP,Rourkela (ROU)-Rajgangpur (GP),CKP,30,110,BG Electrified,15.0,30,2026-08-07,59.4,1,Low
+SEC_GP_JSG,Rajgangpur (GP)-Jharsuguda (JSG),CKP,71,110,BG Electrified,15.0,30,2026-08-07,59.4,1,Low

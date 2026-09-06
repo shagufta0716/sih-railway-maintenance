@@ -1,0 +1,4 @@
+job_id,section_id,job_type,estimated_duration_hrs,section_name,zone,total_length_km,annual_speed_limit_kmph,track_type,asset_age_years,days_since_inspection,last_inspection_date,track_condition_score,traffic_density_num,traffic_density,defect_severity,days_overdue,reported_date,risk_level_num,risk_level,preferred_window_start_hr,preferred_window_end_hr,assigned_block_day,assigned_block_start_hr
+JOB_CKP_001,SEC_CKP_MOU,Rolling Block,4,Chakradharpur (CKP)-Manoharpur (MOU),CKP,62,110,BG Electrified,15.0,30,2026-08-07,59.4,1,Low,1,0,2026-09-12 10:00,1,Low,2,6,0,2
+JOB_ROU_002,SEC_ROU_GP,Track Relaying,4,Rourkela (ROU)-Rajgangpur (GP),CKP,30,110,BG Electrified,15.0,30,2026-08-07,59.4,1,Low,5,0,2026-09-15 11:30,4,Critical,2,6,0,2
+JOB_TATA_003,SEC_TATA_SINI,OHE Maintenance,3,Tatanagar (TATA)-Sini (SINI),CKP,35,110,BG Electrified,15.0,30,2026-08-07,71.9,1,Low,3,0,2026-09-18 01:00,2,Medium,2,6,0,2

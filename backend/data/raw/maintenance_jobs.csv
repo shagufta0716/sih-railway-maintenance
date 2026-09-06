@@ -1,0 +1,4 @@
+job_id,section_id,block_type,start_time,end_time,required_hours,affected_train_ids,status
+JOB_CKP_001,SEC_CKP_MOU,Rolling Block,2026-09-12 10:00,2026-09-12 14:00,4,18109;G_COAL_01,Approved
+JOB_ROU_002,SEC_ROU_GP,Track Relaying,2026-09-15 11:30,2026-09-15 15:30,4,12871;G_STEEL_02,Pending
+JOB_TATA_003,SEC_TATA_SINI,OHE Maintenance,2026-09-18 01:00,2026-09-18 04:00,3,18011,Approved

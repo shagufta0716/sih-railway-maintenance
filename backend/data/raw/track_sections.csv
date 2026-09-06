@@ -1,0 +1,7 @@
+section_id,start_station,end_station,distance_km,max_speed_kmh,tracks_count,division
+SEC_TATA_SINI,Tatanagar (TATA),Sini (SINI),35,110,3,CKP
+SEC_SINI_CKP,Sini (SINI),Chakradharpur (CKP),27,110,3,CKP
+SEC_CKP_MOU,Chakradharpur (CKP),Manoharpur (MOU),62,110,2,CKP
+SEC_MOU_ROU,Manoharpur (MOU),Rourkela (ROU),40,110,2,CKP
+SEC_ROU_GP,Rourkela (ROU),Rajgangpur (GP),30,110,2,CKP
+SEC_GP_JSG,Rajgangpur (GP),Jharsuguda (JSG),71,110,2,CKP

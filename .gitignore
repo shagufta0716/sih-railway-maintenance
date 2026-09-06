@@ -14,8 +14,12 @@ venv/
 env/
 .venv/
 
-# Models (large binary files - optional to exclude)
-# models/
+# ML model (large binary — regenerate with train_model.py)
+backend/models/
+
+# Generated data outputs (regenerate with scheduler.py)
+backend/data/optimized_schedule.csv
+backend/data/real/optimized_schedule.csv
 
 # IDE
 .vscode/
@@ -27,5 +31,10 @@ env/
 .DS_Store
 Thumbs.db
 
-# Streamlit
+# Streamlit (legacy)
 .streamlit/
+
+# Environment secrets — NEVER commit these
+.env
+.env.local
+.env.production
