@@ -70,9 +70,9 @@ y_reg = df["priority_score"]          # Regression target
 
 # Urgency class from priority score
 def to_urgency(score):
-    if score >= 75:   return 3   # Critical
-    elif score >= 50: return 2   # High
-    elif score >= 25: return 1   # Medium
+    if score >= 70:   return 3   # Critical
+    elif score >= 52: return 2   # High
+    elif score >= 35: return 1   # Medium
     else:             return 0   # Low
 
 y_cls = y_reg.apply(to_urgency)       # Classification target

@@ -82,20 +82,31 @@ for _, row in timetable_df.iterrows():
 print("      Conflict map ready")
 
 # ─────────────────────────────────────────
+# ─────────────────────────────────────────
 # Helper: find free maintenance window
 # ─────────────────────────────────────────
-def find_free_window(section_id, duration_hrs, preferred_start_hr=1, max_day=SCHEDULE_DAYS):
-    """Find earliest day + hour where track is free for `duration_hrs` hours."""
+maint_slots = {}  # maint_slots[sec][day] = set of reserved maintenance hours
+
+def find_free_window(section_id, duration_hrs, target_day=0, preferred_start_hr=1, max_day=SCHEDULE_DAYS):
+    """Find earliest day + hour starting from target_day where track is free for `duration_hrs` hours."""
     needed = int(np.ceil(duration_hrs))
     sec_busy = blocked_slots.get(section_id, {})
+    sec_maint = maint_slots.get(section_id, {})
 
-    for day in range(max_day):
-        busy_today = sec_busy.get(day, set())
-        for start_hr in range(0, 24 - needed):
+    for day in range(target_day, max_day):
+        busy_today = sec_busy.get(day, set()).union(sec_maint.get(day, set()))
+        candidate_hours = [preferred_start_hr] + [h for h in range(0, 24 - needed) if h != preferred_start_hr]
+        for start_hr in candidate_hours:
             candidate = range(start_hr, start_hr + needed)
             if not any(h in busy_today for h in candidate):
+                if section_id not in maint_slots:
+                    maint_slots[section_id] = {}
+                if day not in maint_slots[section_id]:
+                    maint_slots[section_id][day] = set()
+                for h in candidate:
+                    maint_slots[section_id][day].add(h)
                 return day, start_hr
-    return None, None   # couldn't schedule
+    return target_day, preferred_start_hr
 
 
 # ─────────────────────────────────────────
@@ -103,30 +114,48 @@ def find_free_window(section_id, duration_hrs, preferred_start_hr=1, max_day=SCH
 # ─────────────────────────────────────────
 print("\n[3/3] Running OR-Tools CP-SAT optimizer...")
 
-# Work on top 50 jobs by ML priority score (for speed)
-top_jobs = jobs_df.nlargest(50, "ml_priority_score").reset_index(drop=True)
+# Select 50 jobs with realistic representation across urgencies
+crit_jobs = jobs_df[jobs_df["ml_urgency_class"] == 3].nlargest(15, "ml_priority_score")
+high_jobs = jobs_df[jobs_df["ml_urgency_class"] == 2].nlargest(20, "ml_priority_score")
+med_jobs  = jobs_df[jobs_df["ml_urgency_class"] <= 1].nlargest(15, "ml_priority_score")
+selected_jobs = pd.concat([crit_jobs, high_jobs, med_jobs]).drop_duplicates(subset=["job_id"]).reset_index(drop=True)
+if len(selected_jobs) < 50:
+    rem = jobs_df[~jobs_df["job_id"].isin(selected_jobs["job_id"])].nlargest(50 - len(selected_jobs), "ml_priority_score")
+    selected_jobs = pd.concat([selected_jobs, rem]).reset_index(drop=True)
+top_jobs = selected_jobs.head(50).copy().reset_index(drop=True)
 
 model  = cp_model.CpModel()
 solver = cp_model.CpSolver()
+MAX_JOBS_PER_DAY = 3
 
 # Variables: for each job, which day slot (0..SCHEDULE_DAYS-1)
 job_vars = {}
 for idx, row in top_jobs.iterrows():
     job_id = row["job_id"]
     job_vars[job_id] = model.NewIntVar(0, SCHEDULE_DAYS - 1, f"day_{job_id}")
+    
+    # Critical jobs: must be within first 7 days (day 0..6)
+    if row["ml_urgency_class"] == 3:
+        model.Add(job_vars[job_id] <= 6)
+    # High urgency jobs: must be within first 16 days (day 0..15)
+    elif row["ml_urgency_class"] == 2:
+        model.Add(job_vars[job_id] <= 15)
 
-# Constraint: critical jobs must be scheduled within first 7 days
-for idx, row in top_jobs.iterrows():
-    if row["ml_urgency_class"] == 3:  # Critical
-        model.Add(job_vars[row["job_id"]] <= 7)
-    elif row["ml_urgency_class"] == 2:  # High
-        model.Add(job_vars[row["job_id"]] <= 15)
+# Crew capacity constraint: at most 3 jobs per day across the network
+for d in range(SCHEDULE_DAYS):
+    bools = []
+    for idx, row in top_jobs.iterrows():
+        jid = row["job_id"]
+        b = model.NewBoolVar(f"b_{jid}_{d}")
+        model.Add(job_vars[jid] == d).OnlyEnforceIf(b)
+        model.Add(job_vars[jid] != d).OnlyEnforceIf(b.Not())
+        bools.append(b)
+    model.Add(sum(bools) <= MAX_JOBS_PER_DAY)
 
 # Objective: minimize weighted day (higher priority = schedule earlier)
-# Weight = 101 - ml_priority_score  (to maximize urgency first)
 objective_terms = []
 for idx, row in top_jobs.iterrows():
-    weight = int(101 - row["ml_priority_score"])
+    weight = int(row["ml_priority_score"])
     objective_terms.append(weight * job_vars[row["job_id"]])
 
 model.Minimize(sum(objective_terms))
@@ -150,16 +179,14 @@ for idx, row in top_jobs.iterrows():
     else:
         day = int(row["assigned_block_day"])  # fallback
 
-    # Find actual free hour on that day
+    # Find actual free hour starting from target day
     assigned_day, start_hr = find_free_window(
         row["section_id"],
         row["estimated_duration_hrs"],
+        target_day=day,
         preferred_start_hr=int(row["preferred_window_start_hr"]),
         max_day=SCHEDULE_DAYS,
     )
-
-    if assigned_day is None:
-        assigned_day, start_hr = day, 1  # last resort
 
     end_hr = start_hr + int(np.ceil(row["estimated_duration_hrs"]))
     block_date = START_DATE + timedelta(days=assigned_day)

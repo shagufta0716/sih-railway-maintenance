@@ -186,14 +186,14 @@ def generate_maintenance_jobs(sections_df, timetable_df):
 
         # TARGET: Priority Score (0–100)
         priority_score = (
-            days_overdue      * 0.35 +
-            severity          * 8.0  +
-            (100 - condition) * 0.25 +
-            age               * 0.5  +
-            density_num       * 5.0  +
-            risk_num[risk_label] * 5.0
+            days_overdue      * 0.25 +
+            severity          * 5.0  +
+            (100 - condition) * 0.20 +
+            age               * 0.30 +
+            density_num       * 3.0  +
+            risk_num[risk_label] * 4.0
         )
-        priority_score = round(min(100, max(0, priority_score + random.gauss(0, 3))), 2)
+        priority_score = round(min(100, max(15, priority_score + random.gauss(0, 2.5))), 1)
 
         pref_window_start = random.choice([1, 2, 3])
         pref_window_end   = pref_window_start + int(duration_hrs) + 1
